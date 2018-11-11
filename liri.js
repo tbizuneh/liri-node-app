@@ -4,9 +4,12 @@ var fs = require("fs");
 var action = process.argv[2];
 var input = process.argv[3]
 var request = require("request");
-var spotify = require('node-spotify-api');
+var Spotify = require('node-spotify-api');
 var moment = require('moment');
-var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify({
+    id: "681e9d2c7ec14d3f9bad1679f0debd2d",
+    secret: "70baaf3e6cff451a96a7be45c5f28a7f"
+})
 
 switch (action) {
     case "concert-this":
@@ -41,28 +44,34 @@ switch (action) {
     })
 }
           
-   function spotifythissong(input){
-      var songName;
-		if (input=undefined){
-        	songName = "The sign by Ace of Base";
-    	}else{
-            songName = input
-        }
-        spotify.search({ type: 'track', query: songName }, function(err, data) {
-            if (error) {
-              console.log('Error occurred: ' + error);
-              return;
-            } else {
-              
-              console.log("Artist: " + data.tracks.items[0].artists[0].name);
-              console.log("Song: " + data.tracks.items[0].name);
-              console.log("Preview: " + data.tracks.items[3].preview_url);
-              console.log("Album: " + data.tracks.items[0].album.name);
-            
-              
+   function spotifythissong(songName){
+    var songName = process.argv[3];
+    if(!songName){
+        songName = "The Sign";
+    }
+    titles = songName;
+    spotify.search({ type: "track", query: titles }, function(err, data) {
+        if(!err){
+            var songInfo = data.tracks.items;
+            for (var i = 0; i < 5; i++) {
+                if (songInfo[i] != undefined) {
+                    var spotifyResults =
+                    "Artist: " + songInfo[i].artists[0].name + "\r\n" +
+                    "Song: " + songInfo[i].name + "\r\n" +
+                    "Album the song is from: " + songInfo[i].album.name + "\r\n" +
+                    "Preview Url: " + songInfo[i].preview_url + "\r\n" + 
+                    "------------------------------ " + i + " ------------------------------" + "\r\n";
+                    console.log(songName)
+                    console.log(spotifyResults);
+                    
+                }
             }
-          });
-        };
+        }	else {
+            console.log("Error :"+ err);
+            return;
+        }
+    });
+};
 
    function moviethis(){
        var movie = input;
@@ -103,7 +112,9 @@ function dowhatitsays(){
         return console.log(error);
     }
      console.log(data);
-})
+    
+ 	});
 }
+
 
 

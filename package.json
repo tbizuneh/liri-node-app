@@ -19,7 +19,9 @@
   "homepage": "https://github.com/tbizuneh/liri-node-app#readme",
   "dependencies": {
     "dotenv": "^6.1.0",
+    "fs": "0.0.1-security",
     "keys": "^0.1.2",
+    "module": "^1.2.5",
     "moment": "^2.22.2",
     "new": "^0.1.1",
     "node-spotify-api": "^1.0.7",
